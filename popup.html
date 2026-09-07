@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dolby Audio Equalizer & 5.1 Virtual Surround</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="eq-container">
+    <!-- Top Header -->
+    <header class="eq-header">
+      <div class="brand-group">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3V21M8 7V17M4 10V14M16 7V17M20 10V14" stroke="url(#brandGrad)" stroke-width="2.5" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="brandGrad" x1="4" y1="3" x2="20" y2="21" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#F59E0B"/>
+                <stop offset="0.5" stop-color="#06B6D4"/>
+                <stop offset="1" stop-color="#3B82F6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>DOLBY AUDIO</h1>
+          <span class="brand-badge">5.1 SURROUND MATRIX</span>
+        </div>
+      </div>
+
+      <div class="power-control">
+        <button id="powerBtn" class="power-btn" title="Nyalakan / Matikan Equalizer pada tab ini">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+            <line x1="12" y1="2" x2="12" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="main-tabs">
+      <button class="tab-nav-btn active" id="tabNavEq" data-tab="tab-eq">
+        <span class="nav-icon">🎛️</span>
+        <span>Equalizer & Presets</span>
+      </button>
+      <button class="tab-nav-btn" id="tabNavSim" data-tab="tab-sim">
+        <span class="nav-icon">🌐</span>
+        <span>Simulasi 5.1 & 3D</span>
+        <span class="nav-badge">5.1 CH</span>
+      </button>
+    </nav>
+
+    <!-- Active Tab Status Banner -->
+    <div class="status-banner" id="statusBanner">
+      <div class="status-indicator">
+        <span class="pulse-dot" id="statusDot"></span>
+        <span class="status-text" id="statusText">Memeriksa tab aktif...</span>
+      </div>
+      <div class="tab-target" id="tabTargetTitle" title="Target Tab">-</div>
+    </div>
+
+    <!-- ==================== TAB 1: EQUALIZER & 5.1 MATRIX ==================== -->
+    <div class="tab-pane active" id="tab-eq">
+      <!-- Live Spectrum Visualizer -->
+      <div class="visualizer-wrapper">
+        <canvas id="visualizerCanvas" width="448" height="50"></canvas>
+        <div class="canvas-overlay">
+          <span class="overlay-tag" id="visualizerStatusLabel">REALTIME SPECTRUM</span>
+        </div>
+      </div>
+
+      <!-- Presets Bar -->
+      <div class="section-block">
+        <div class="section-title-row">
+          <div class="preset-title-left">
+            <span class="section-title">PRESET AUDIO</span>
+            <span class="preset-indicator" id="currentPresetName">Dolby Cinema 5.1</span>
+          </div>
+          <!-- Preset Action Buttons (Save & Save As) -->
+          <div class="preset-actions-group">
+            <button id="savePresetBtn" class="preset-action-btn btn-save hidden" title="Simpan perubahan dan timpa preset ini">
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+              </svg>
+              <span>Simpan</span>
+            </button>
+            <button id="saveAsPresetBtn" class="preset-action-btn btn-save-as hidden" title="Simpan sebagai preset kustom baru">
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="12" y1="18" x2="12" y2="12"></line>
+                <line x1="9" y1="15" x2="15" y2="15"></line>
+              </svg>
+              <span>Simpan Sebagai...</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="presets-scroll" id="presetButtons">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- 10-Band Graphic Equalizer -->
+      <div class="section-block">
+        <div class="section-title-row">
+          <span class="section-title">10-BAND GRAPHIC EQUALIZER</span>
+          <span class="gain-range-label">&plusmn;12 dB</span>
+        </div>
+        
+        <div class="equalizer-grid" id="eqSlidersContainer">
+          <!-- 10 Vertical Band Sliders generated dynamically by JS -->
+        </div>
+      </div>
+
+      <!-- DOLBY 5.1 SURROUND MATRIX MIXER -->
+      <div class="section-block matrix-51-section">
+        <div class="section-title-row">
+          <div class="title-with-badge">
+            <span class="section-title">DOLBY 5.1 SURROUND MATRIX MIXER</span>
+            <span class="tag-51">PRO LOGIC II</span>
+          </div>
+          <div class="header-toggles">
+            <label class="toggle-mode-label" title="Filter Bass Bulat: Potong dengung 120Hz & anti-mendem 220Hz agar bass bulat, empuk, dan vokal jernih">
+              <span class="mode-text tight-bass-text">Bass Bulat:</span>
+              <input type="checkbox" id="tightBassToggle" checked>
+              <span class="switch-small"></span>
+            </label>
+            <label class="toggle-mode-label" title="Aktifkan pemisahan 6 kanal 5.1">
+              <span class="mode-text">Mode 5.1:</span>
+              <input type="checkbox" id="mode51Toggle" checked>
+              <span class="switch-small"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="matrix-grid-4">
+          <!-- Center Channel (Dialogue) -->
+          <div class="matrix-card">
+            <div class="matrix-header">
+              <span class="m-icon">🗣️</span>
+              <div class="m-titles">
+                <span class="m-name">Center / Dialog</span>
+                <span class="m-desc">Vokal jernih di tengah</span>
+              </div>
+              <span class="m-val" id="centerVal">80%</span>
+            </div>
+            <input type="range" id="centerSlider" class="horizontal-range" min="0" max="100" value="80">
+          </div>
+
+          <!-- Subwoofer LFE (.1 Bass) -->
+          <div class="matrix-card">
+            <div class="matrix-header">
+              <span class="m-icon">💥</span>
+              <div class="m-titles">
+                <span class="m-name">Subwoofer (.1)</span>
+                <span class="m-desc">Sub-bass bulat & empuk</span>
+              </div>
+              <span class="m-val" id="subwooferVal">80%</span>
+            </div>
+            <input type="range" id="subwooferSlider" class="horizontal-range" min="0" max="100" value="80">
+          </div>
+
+          <!-- Rear Surround (Ambience) -->
+          <div class="matrix-card">
+            <div class="matrix-header">
+              <span class="m-icon">🔊</span>
+              <div class="m-titles">
+                <span class="m-name">Rear Surround</span>
+                <span class="m-desc">Efek suara belakang</span>
+              </div>
+              <span class="m-val" id="surroundVal">75%</span>
+            </div>
+            <input type="range" id="surroundSlider" class="horizontal-range" min="0" max="100" value="75">
+          </div>
+
+          <!-- Transient Attack (Sound Punch & Articulation) -->
+          <div class="matrix-card">
+            <div class="matrix-header">
+              <span class="m-icon">⚡</span>
+              <div class="m-titles">
+                <span class="m-name">Transient Attack</span>
+                <span class="m-desc">Ketajaman & respons suara</span>
+              </div>
+              <span class="m-val" id="attackVal">25ms</span>
+            </div>
+            <input type="range" id="attackSlider" class="horizontal-range" min="1" max="100" value="25" title="Atur kecepatan respon suara (1ms halus - 100ms pukulan tajam)">
+          </div>
+        </div>
+      </div>
+
+      <!-- Master Volume & DRC Controls -->
+      <div class="section-block">
+        <div class="enhancers-grid">
+          <!-- Master Volume Preamp (0 - 300%) -->
+          <div class="enhancer-card">
+            <div class="card-header">
+              <span class="card-icon">📢</span>
+              <div class="card-titles">
+                <span class="card-name">Master Preamp</span>
+                <span class="card-desc">Penguatan volume aman</span>
+              </div>
+              <span class="card-val" id="volumeVal">100%</span>
+            </div>
+            <input type="range" id="volumeSlider" class="horizontal-range" min="0" max="300" value="100">
+          </div>
+
+          <!-- Dolby Cinema DRC Compressor -->
+          <div class="enhancer-card switch-card">
+            <div class="card-header">
+              <span class="card-icon">🎬</span>
+              <div class="card-titles">
+                <span class="card-name">Dolby Cinema DRC</span>
+                <span class="card-desc">Anti-clipping & dynamic balance</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="drcToggle" checked>
+                <span class="slider-round"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 2: 5.1 & 3D SPATIAL ARENA ==================== -->
+    <div class="tab-pane" id="tab-sim">
+      <!-- 3D Simulator Arena Card -->
+      <div class="sim-arena-card">
+        <div class="sim-arena-header">
+          <div class="sim-title-group">
+            <span class="arena-icon">🎧</span>
+            <div>
+              <h2 class="arena-title">PANGGUNG 3D & MONITOR 5.1</h2>
+              <p class="arena-subtitle">Denah 6 speaker bioskop & putaran suara 360&deg;</p>
+            </div>
+          </div>
+          <button id="toggleSimBtn" class="sim-audio-btn" title="Nyalakan suara putaran 3D">
+            <span class="sim-audio-icon" id="simBtnIcon">▶</span>
+            <span class="sim-audio-text" id="simBtnText">Putar Suara 3D</span>
+          </button>
+        </div>
+
+        <!-- Big 3D Stage Canvas -->
+        <div class="sim-canvas-container">
+          <canvas id="simulationCanvas" width="448" height="180"></canvas>
+          <div class="sim-canvas-overlay-top">
+            <span class="radar-tag">RADAR AUDIO 3D BINAURAL</span>
+          </div>
+          <div class="sim-direction-chip">
+            <span class="chip-dir" id="simDirectionText">DEPAN</span>
+            <span class="chip-deg" id="simDegreeText">0&deg;</span>
+          </div>
+        </div>
+
+        <!-- 5.1 CHANNEL SPEAKER INTERACTIVE MATRIX -->
+        <div class="speaker-layout-section">
+          <div class="speaker-layout-header">
+            <span class="spk-title">KLIK SPEAKER UNTUK TES POSISI 5.1</span>
+            <button id="sweep51Btn" class="sweep-btn" title="Tes putar semua speaker satu per satu">
+              🎬 Tes Keliling 5.1
+            </button>
+          </div>
+
+          <div class="speakers-grid">
+            <!-- Front Left -->
+            <button class="speaker-card" data-speaker="FL" id="spkFL">
+              <div class="spk-indicator"></div>
+              <span class="spk-badge">FL</span>
+              <span class="spk-role">Kiri Depan</span>
+            </button>
+
+            <!-- Center -->
+            <button class="speaker-card" data-speaker="C" id="spkC">
+              <div class="spk-indicator"></div>
+              <span class="spk-badge">CENTER</span>
+              <span class="spk-role">Dialog / Vokal</span>
+            </button>
+
+            <!-- Front Right -->
+            <button class="speaker-card" data-speaker="FR" id="spkFR">
+              <div class="spk-indicator"></div>
+              <span class="spk-badge">FR</span>
+              <span class="spk-role">Kanan Depan</span>
+            </button>
+
+            <!-- Surround Left -->
+            <button class="speaker-card" data-speaker="SL" id="spkSL">
+              <div class="spk-indicator"></div>
+              <span class="spk-badge">SURR L</span>
+              <span class="spk-role">Kiri Belakang</span>
+            </button>
+
+            <!-- Subwoofer -->
+            <button class="speaker-card sub-card" data-speaker="SUB" id="spkSUB">
+              <div class="spk-indicator"></div>
+              <span class="spk-badge">SUB .1</span>
+              <span class="spk-role">Sub-Bass LFE</span>
+            </button>
+
+            <!-- Surround Right -->
+            <button class="speaker-card" data-speaker="SR" id="spkSR">
+              <div class="spk-indicator"></div>
+              <span class="spk-badge">SURR R</span>
+              <span class="spk-role">Kanan Belakang</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Surround Tips -->
+        <div class="sim-hint-card">
+          <span class="hint-icon">💡</span>
+          <span class="hint-text">Gunakan <strong>headphone / earphone</strong> untuk merasakan sensasi tata suara 5.1 bioskop nyata (vokal di tengah layar, efek mengitari belakang, dan bass bergetar)!</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Actions -->
+    <footer class="eq-footer">
+      <button class="action-btn secondary" id="resetBtn">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+        </svg>
+        Reset Default
+      </button>
+      <div class="footer-tip">
+        <span>Dolby Pro Logic II & 5.1 Matrix Engine</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Save Preset Modal / Dialog -->
+  <div id="savePresetModal" class="modal-backdrop hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-icon">💾</span>
+          <h3>Simpan Preset Kustom</h3>
+        </div>
+        <button id="closeModalBtn" class="modal-close-btn" title="Tutup">&times;</button>
+      </div>
+      <p class="modal-desc">Simpan konfigurasi equalizer, mixer 5.1, dan DRC saat ini untuk digunakan di kemudian hari.</p>
+      
+      <div class="modal-body">
+        <label for="presetNameInput" class="input-label">Nama Preset</label>
+        <input type="text" id="presetNameInput" class="modal-input" placeholder="Contoh: Bioskop 5.1 Mantap" maxlength="20">
+        <span class="input-error hidden" id="presetInputError">Nama preset tidak boleh kosong!</span>
+      </div>
+
+      <div class="modal-footer">
+        <button id="cancelModalBtn" class="action-btn">Batal</button>
+        <button id="confirmSavePresetBtn" class="action-btn primary-save">Simpan Preset</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
