@@ -69,20 +69,24 @@ body {
 }
 
 .brand-logo {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(245, 158, 11, 0.1);
-  border: 1px solid rgba(245, 158, 11, 0.25);
-  border-radius: var(--radius-md);
-  box-shadow: 0 0 12px var(--color-gold-glow);
+  background: #080c14;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
-.brand-logo svg {
-  width: 18px;
-  height: 18px;
+.brand-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .brand-text h1 {
