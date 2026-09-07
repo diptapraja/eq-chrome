@@ -1,4 +1,4 @@
-// Offscreen Audio Engine for Dolby Audio Equalizer & 5.1 Virtual Surround
+// Offscreen Audio Engine for TuneUP Audio Equalizer & 5.1 Virtual Surround
 
 const EQ_FREQUENCIES = [32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
 
@@ -14,7 +14,7 @@ let analyserNode = null;
 let activeTabId = null;
 let currentSettings = null;
 
-// Initialize Web Audio Graph with Dolby 5.1 Matrix Decoding
+// Initialize Web Audio Graph with TuneUP 5.1 Matrix Decoding
 function setupAudioGraph(stream, settings) {
   currentSettings = settings;
 
@@ -63,12 +63,12 @@ function setupAudioGraph(stream, settings) {
   lastNode.connect(bassFilter);
   lastNode = bassFilter;
 
-  // 4. Dolby 5.1 Virtual Surround Sound Matrix
+  // 4. TuneUP 5.1 Virtual Surround Sound Matrix
   surround51Nodes = create51SurroundNetwork(audioCtx, settings);
   lastNode.connect(surround51Nodes.input);
   lastNode = surround51Nodes.output;
 
-  // 5. Dolby Cinema Dynamics Range Compressor (DRC)
+  // 5. Cinema Dynamics Range Compressor (DRC)
   compressorNode = audioCtx.createDynamicsCompressor();
   applyCompressorSettings(settings.drcEnabled, settings.attackTime);
   lastNode.connect(compressorNode);
@@ -91,7 +91,7 @@ function setupAudioGraph(stream, settings) {
   analyserNode.connect(audioCtx.destination);
 }
 
-// Dolby 5.1 Virtual Surround Matrix Network
+// TuneUP 5.1 Virtual Surround Matrix Network
 // Decodes stereo input into FL, FR, Center (dialogue), Subwoofer LFE (.1), Surround Left, Surround Right
 function create51SurroundNetwork(ctx, settings) {
   const input = ctx.createGain();
@@ -322,7 +322,7 @@ function applyCompressorSettings(enabled, attackMs) {
   const now = audioCtx.currentTime;
 
   if (enabled) {
-    // Dolby Cinema DRC Profile with user-adjustable transient attack
+    // Cinema DRC Profile with user-adjustable transient attack
     const ms = (attackMs !== undefined && attackMs !== null) ? attackMs : (currentSettings?.attackTime || 25);
     const attackSec = Math.max(0.001, Math.min(0.1, ms / 1000));
 
@@ -358,7 +358,7 @@ function updateAudioSettings(settings) {
     bassFilter.gain.setTargetAtTime(bassGainDb, now, 0.04);
   }
 
-  // 3. Update Dolby 5.1 Matrix Surround Engine
+  // 3. Update TuneUP 5.1 Matrix Surround Engine
   if (surround51Nodes) {
     surround51Nodes.updateSettings(settings);
   }

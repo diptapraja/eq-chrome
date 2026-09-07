@@ -1,9 +1,9 @@
-# 🎬 Dolby Audio Equalizer & 5.1 Virtual Surround (Chrome Extension)
+# 🎬 TuneUP - Audio Equalizer & 5.1 Virtual Surround (Chrome Extension)
 
-Ekstensi Google Chrome modern (Manifest V3) untuk meningkatkan kualitas audio tab aktif (seperti YouTube, Netflix, Spotify Web, Twitch, dll.) menjadi setara **Sistem Tata Suara Bioskop Dolby 5.1 Virtual Surround Matrix**.
+Ekstensi Google Chrome modern (Manifest V3) untuk meningkatkan kualitas audio tab aktif (seperti YouTube, Netflix, Spotify Web, Twitch, dll.) menjadi setara **Sistem Tata Suara Bioskop TuneUP 5.1 Virtual Surround Matrix**.
 
 Dilengkapi dengan:
-- **Dekoder Matriks 6 Kanal 5.1 (Dolby Pro Logic II spec)**:
+- **Dekoder Matriks 6 Kanal 5.1 (Pro Matrix Soundstage spec)**:
   - 🔊 **FL (Front Left)** & 🔊 **FR (Front Right)**: Panggung depan stereo yang presisi dengan *Complementary Crossover Management* agar tidak terjadi penumpukan bass ganda.
   - 🗣️ **Center Channel (C)**: Ekstraksi vokal dan dialog agar terdengar jernih di tengah layar.
   - 💥 **Subwoofer LFE (.1)**: Filter getaran frekuensi rendah $(<85\text{Hz})$ dengan kurva *24dB/octave Butterworth* ($Q=0.707$) untuk dentuman bass yang empuk, bulat, dan bebas dengung.
@@ -23,8 +23,8 @@ Dilengkapi dengan:
   - Bass bulat bertenaga ($80\text{ Hz}$ punch) dengan separasi panggung 5.1 yang luas.
 - **Fitur Simpan Preset Kustom Fleksibel (Save & Save As)**:
   - **Preset Kustom**: Jika Anda mengubah setelan pada preset buatan Anda sendiri, muncul 2 tombol: **"Simpan"** (langsung mereplace konfigurasi preset tersebut) dan **"Simpan Sebagai..."** (menyimpan sebagai preset baru).
-  - **Preset Bawaan**: Tombol "Simpan" (replace) diproteksi dan **tidak akan muncul** pada preset bawaan sistem (`Dolby Cinema`, `FLAC Master`, dll.), hanya muncul **"Simpan Sebagai..."** untuk mencegah preset standar tertimpa.
-- **Dolby Dynamic Range Compression (DRC)** & **Master Preamp Boost** (hingga 300%).
+  - **Preset Bawaan**: Tombol "Simpan" (replace) diproteksi dan **tidak akan muncul** pada preset bawaan sistem (`Cinema 5.1`, `FLAC Master`, dll.), hanya muncul **"Simpan Sebagai..."** untuk mencegah preset standar tertimpa.
+- **TuneUP Dynamic Range Compression (DRC)** & **Master Preamp Boost** (hingga 300%).
 
 ---
 
@@ -41,19 +41,19 @@ Dilengkapi dengan:
    ```text
    /Users/dipta/Herd/equalizer
    ```
-6. Ekstensi **Dolby Audio Equalizer & 5.1 Virtual Surround** siap dinikmati!
+6. Ekstensi **TuneUP - Audio Equalizer & 5.1 Virtual Surround** siap dinikmati!
 
 ---
 
 ## 🎧 Cara Menggunakan Fitur 5.1 Surround
 
 ### 1. Mengaktifkan 5.1 pada Video YouTube:
-1. Buka video YouTube (misalnya trailer film *4K Dolby Atmos*, film laga, atau video musik).
+1. Buka video YouTube (misalnya trailer film aksi 4K, video surround test, atau video musik).
 2. Klik ikon ekstensi di toolbar Chrome.
 3. Klik tombol **Power** (kanan atas) untuk mengaktifkan equalizer & matriks 5.1.
-4. Pada tab **Equalizer & Presets**, Anda akan melihat bagian **DOLBY 5.1 SURROUND MATRIX MIXER** (Grid 2x2 rapi):
+4. Pada tab **Equalizer & Presets**, Anda akan melihat bagian **TUNEUP 5.1 SURROUND MATRIX** (Grid 2x2 rapi):
    - Geser slider **Center / Dialog** untuk mengatur seberapa dominan dan jernih suara vokal percakapan.
-   - Geser slider **Subwoofer (.1)** untuk mengatur kekuatan getaran bass bioskop 120Hz.
+   - Geser slider **Subwoofer (.1)** untuk mengatur kekuatan getaran bass bioskop.
    - Geser slider **Rear Surround** untuk memperlebar atau memperkuat suara efek dari belakang telinga Anda.
    - Geser slider **Transient Attack** (1ms - 100ms) untuk mengatur ketajaman respon pukulan suara agar tidak ada detail atau ketukan yang teredam/tertahan!
 

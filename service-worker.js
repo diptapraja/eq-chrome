@@ -1,16 +1,16 @@
-// Service Worker for Dolby Audio Equalizer & 5.1 Virtual Surround (Manifest V3)
+// Service Worker for TuneUP Audio Equalizer & 5.1 Virtual Surround (Manifest V3)
 
 const DEFAULT_SETTINGS = {
   enabled: false,
-  preset: 'dolby_cinema',
-  basePreset: 'dolby_cinema',
+  preset: 'cinema_51',
+  basePreset: 'cinema_51',
   bands: [4, 3, 1, -1, 0, 1, 2, 3, 4, 5],
   bassBoost: 35,
   spatialWidth: 70,
   drcEnabled: true,
   masterVolume: 100,
   capturedTabId: null,
-  // Dolby 5.1 Surround Settings
+  // TuneUP 5.1 Surround Settings
   mode51: true,
   centerLevel: 80,      // 0 - 100%
   subwooferLevel: 80,   // 0 - 100% (Solid, round sub-bass)

@@ -1,4 +1,4 @@
-// Popup Script for Dolby Audio Equalizer & 5.1 Virtual Surround
+// Popup Script for TuneUP - Audio Equalizer & 5.1 Virtual Surround
 
 const FREQUENCIES = [
   { label: '32', hz: 32 },
@@ -14,8 +14,22 @@ const FREQUENCIES = [
 ];
 
 const DEFAULT_PRESETS = {
+  cinema_51: {
+    name: 'Cinema 5.1 Surround',
+    bands: [4, 3, 1, -1, 0, 1, 2, 3, 4, 5],
+    bassBoost: 35,
+    spatialWidth: 70,
+    drcEnabled: true,
+    mode51: true,
+    centerLevel: 80,
+    subwooferLevel: 80,
+    surroundLevel: 75,
+    attackTime: 25,
+    tightBass: true
+  },
   dolby_cinema: {
-    name: 'Dolby Cinema 5.1',
+    // Alias untuk kompatibilitas konfigurasi lama
+    name: 'Cinema 5.1 Surround',
     bands: [4, 3, 1, -1, 0, 1, 2, 3, 4, 5],
     bassBoost: 35,
     spatialWidth: 70,
@@ -150,15 +164,15 @@ let userCustomPresets = {};
 
 let currentSettings = {
   enabled: false,
-  preset: 'dolby_cinema',
-  basePreset: 'dolby_cinema',
+  preset: 'cinema_51',
+  basePreset: 'cinema_51',
   bands: [4, 3, 1, -1, 0, 1, 2, 3, 4, 5],
   bassBoost: 35,
   spatialWidth: 70,
   drcEnabled: true,
   masterVolume: 100,
   capturedTabId: null,
-  // Dolby 5.1 Matrix Settings
+  // TuneUP 5.1 Matrix Settings
   mode51: true,
   centerLevel: 80,
   subwooferLevel: 80,
@@ -353,6 +367,8 @@ async function loadSavedSettings() {
   }
   if (stored.eq_settings) {
     currentSettings = { ...currentSettings, ...stored.eq_settings };
+    if (currentSettings.preset === 'dolby_cinema') currentSettings.preset = 'cinema_51';
+    if (currentSettings.basePreset === 'dolby_cinema') currentSettings.basePreset = 'cinema_51';
   }
 
   // Check capture state
@@ -381,7 +397,7 @@ function renderPresetButtons() {
   presetButtonsContainer.innerHTML = '';
 
   const defaultKeys = [
-    { key: 'dolby_cinema', label: '🎬 Dolby Cinema 5.1' },
+    { key: 'cinema_51', label: '🎬 Cinema 5.1' },
     { key: 'flac_master', label: '💎 FLAC Master HD' },
     { key: 'spatial_3d', label: '🎧 Spatial 3D' },
     { key: 'bass_extreme', label: '🔊 Bass Extreme 5.1' },
@@ -432,7 +448,7 @@ function applySettingsToUI() {
   if (currentSettings.enabled) {
     powerBtn.classList.add('active');
     statusDot.classList.add('active');
-    statusText.textContent = currentSettings.mode51 ? 'Dolby 5.1 Surround Aktif' : 'Dolby Stereo Aktif';
+    statusText.textContent = currentSettings.mode51 ? 'TuneUP 5.1 Surround Aktif' : 'TuneUP Stereo Aktif';
     visualizerStatusLabel.textContent = '5.1 SPECTRUM AKTIF';
   } else {
     powerBtn.classList.remove('active');
@@ -493,7 +509,7 @@ function isSettingsDifferentFromPreset(settings, preset) {
 }
 
 function updateSaveButtonsVisibility() {
-  const baseKey = currentSettings.basePreset || currentSettings.preset || 'dolby_cinema';
+  const baseKey = currentSettings.basePreset || currentSettings.preset || 'cinema_51';
   const isCustom = Boolean(userCustomPresets[baseKey]);
   const basePresetObj = userCustomPresets[baseKey] || DEFAULT_PRESETS[baseKey];
 
@@ -540,12 +556,13 @@ function updatePresetSelectionUI(presetKey) {
 
 function markPresetAsCustom() {
   if (!currentSettings.basePreset) {
-    currentSettings.basePreset = currentSettings.preset || 'dolby_cinema';
+    currentSettings.basePreset = currentSettings.preset || 'cinema_51';
   }
   updateSaveButtonsVisibility();
 }
 
 function applyPreset(presetKey) {
+  if (presetKey === 'dolby_cinema') presetKey = 'cinema_51';
   let p = DEFAULT_PRESETS[presetKey] || userCustomPresets[presetKey];
   if (!p) return;
 
@@ -613,7 +630,7 @@ async function deleteCustomPreset(key) {
     await chrome.storage.local.set({ user_presets: userCustomPresets });
 
     if (currentSettings.preset === key || currentSettings.basePreset === key) {
-      applyPreset('dolby_cinema');
+      applyPreset('cinema_51');
     } else {
       renderPresetButtons();
       updateSaveButtonsVisibility();
@@ -693,7 +710,7 @@ function setupEventListeners() {
 
   // Reset Button
   resetBtn.addEventListener('click', () => {
-    applyPreset('dolby_cinema');
+    applyPreset('cinema_51');
     volumeSlider.value = 100;
     volumeVal.textContent = '100%';
     currentSettings.masterVolume = 100;
