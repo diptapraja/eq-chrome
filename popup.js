@@ -14,6 +14,20 @@ const FREQUENCIES = [
 ];
 
 const DEFAULT_PRESETS = {
+  devstyle: {
+    name: 'DevStyle',
+    bands: [3, 2, 0, -1, 0, 1, 2, 3, 4, 5],
+    bassBoost: 30,
+    spatialWidth: 80,
+    drcEnabled: true,
+    mode51: true,
+    centerLevel: 100,
+    subwooferLevel: 80,
+    surroundLevel: 80,
+    attackTime: 22,
+    tightBass: true,
+    masterVolume: 68
+  },
   cinema_51: {
     name: 'Cinema 5.1 Surround',
     bands: [4, 3, 1, -1, 0, 1, 2, 3, 4, 5],
@@ -369,6 +383,10 @@ async function loadSavedSettings() {
     currentSettings = { ...currentSettings, ...stored.eq_settings };
     if (currentSettings.preset === 'dolby_cinema') currentSettings.preset = 'cinema_51';
     if (currentSettings.basePreset === 'dolby_cinema') currentSettings.basePreset = 'cinema_51';
+    if (!isSettingsDifferentFromPreset(currentSettings, DEFAULT_PRESETS.devstyle)) {
+      currentSettings.preset = 'devstyle';
+      currentSettings.basePreset = 'devstyle';
+    }
   }
 
   // Check capture state
@@ -398,6 +416,7 @@ function renderPresetButtons() {
 
   const defaultKeys = [
     { key: 'cinema_51', label: '🎬 Cinema 5.1' },
+    { key: 'devstyle', label: '⚡ DevStyle' },
     { key: 'flac_master', label: '💎 FLAC Master HD' },
     { key: 'spatial_3d', label: '🎧 Spatial 3D' },
     { key: 'bass_extreme', label: '🔊 Bass Extreme 5.1' },
@@ -578,6 +597,9 @@ function applyPreset(presetKey) {
   currentSettings.subwooferLevel = p.subwooferLevel !== undefined ? p.subwooferLevel : 80;
   currentSettings.surroundLevel = p.surroundLevel !== undefined ? p.surroundLevel : 75;
   currentSettings.attackTime = p.attackTime !== undefined ? p.attackTime : 25;
+  if (p.masterVolume !== undefined) {
+    currentSettings.masterVolume = p.masterVolume;
+  }
 
   applySettingsToUI();
   syncSettingsToAudio();
