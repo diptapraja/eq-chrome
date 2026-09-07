@@ -34,12 +34,16 @@
     <nav class="main-tabs">
       <button class="tab-nav-btn active" id="tabNavEq" data-tab="tab-eq">
         <span class="nav-icon">🎛️</span>
-        <span>Equalizer & Presets</span>
+        <span>Equalizer</span>
       </button>
       <button class="tab-nav-btn" id="tabNavSim" data-tab="tab-sim">
         <span class="nav-icon">🌐</span>
         <span>Simulasi 5.1 & 3D</span>
         <span class="nav-badge">5.1 CH</span>
+      </button>
+      <button class="tab-nav-btn" id="tabNavDonate" data-tab="tab-donate">
+        <span class="nav-icon">💖</span>
+        <span>Donasi</span>
       </button>
     </nav>
 
@@ -306,6 +310,96 @@
         <div class="sim-hint-card">
           <span class="hint-icon">💡</span>
           <span class="hint-text">Gunakan <strong>headphone / earphone</strong> untuk merasakan sensasi tata suara 5.1 bioskop nyata (vokal di tengah layar, efek mengitari belakang, dan bass bergetar)!</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 3: DONASI DEVELOPER ==================== -->
+    <div class="tab-pane" id="tab-donate">
+      <div class="donate-container">
+        <!-- Hero Card -->
+        <div class="donate-hero-card">
+          <div class="donate-hero-icon">☕</div>
+          <div class="donate-hero-text">
+            <h3>Dukungan untuk Pengembang</h3>
+            <p>Jika TuneUP bermanfaat meningkatkan kualitas audio Anda, donasi sukarela Anda sangat berarti untuk mendukung pengembangan & pembaruan fitur baru selanjutnya. Terima kasih banyak! 🙏</p>
+          </div>
+        </div>
+
+        <!-- Metode 1: DANA -->
+        <div class="donate-card dana-card">
+          <div class="donate-card-header">
+            <div class="donate-brand-badge dana-badge">
+              <svg viewBox="0 0 90 28" width="76" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="90" height="28" rx="6" fill="#118EEA"/>
+                <text x="45" y="19" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="900" text-anchor="middle" letter-spacing="1.5">DANA</text>
+              </svg>
+            </div>
+            <div class="donate-brand-info">
+              <span class="donate-brand-title">DANA (Dompet Digital)</span>
+              <span class="donate-brand-sub">Transfer E-Wallet / Saldo</span>
+            </div>
+          </div>
+
+          <div class="donate-data-row">
+            <div class="donate-data-box">
+              <span class="donate-data-label">Nomor Akun DANA</span>
+              <span class="donate-data-value" id="danaNumberText">089604156591</span>
+            </div>
+            <button class="donate-copy-btn" id="copyDanaBtn" data-copy="089604156591" title="Salin nomor DANA">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span>Salin</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Metode 2: USDT Crypto -->
+        <div class="donate-card usdt-card">
+          <div class="donate-card-header">
+            <div class="donate-brand-badge usdt-badge">
+              <svg viewBox="0 0 32 32" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="16" cy="16" r="16" fill="#26A17B"/>
+                <path d="M17.922 17.383c-.11.008-.68.043-1.878.043-1.042 0-1.69-.035-1.838-.043-.377-.02-.455-.078-.455-.178 0-.106.078-.164.455-.184.148-.008.796-.043 1.838-.043 1.198 0 1.768.035 1.878.043.377.02.455.078.455.184 0 .1-.078.158-.455.178zm.024-1.258c-.11.008-.68.043-1.88.043-1.04 0-1.69-.035-1.836-.043-.377-.02-.455-.078-.455-.183 0-.1.078-.16.455-.18.146-.01.796-.045 1.836-.045 1.2 0 1.77.035 1.88.045.377.02.455.08.455.18 0 .105-.078.163-.455.183zm.045-1.28c-.112.007-.682.043-1.88.043-1.042 0-1.69-.036-1.838-.043-.377-.02-.455-.08-.455-.183 0-.1.078-.16.455-.18.148-.008.796-.043 1.838-.043 1.198 0 1.768.035 1.88.043.377.02.455.08.455.18 0 .103-.078.163-.455.183zM16.033 6C10.5 6 6 10.5 6 16.033c0 5.534 4.5 10.034 10.033 10.034 5.534 0 10.034-4.5 10.034-10.034C26.067 10.5 21.567 6 16.033 6zm4.84 8.784c-.043.354-.316 1.488-1.574 1.935v3.834h-1.877v-3.793c-.45.024-.925.037-1.422.037-.478 0-.936-.013-1.373-.037v3.793h-1.877v-3.834c-1.258-.447-1.531-1.58-1.574-1.935-.045-.37.135-.67.49-.824.364-.158.948-.28 1.63-.332v-1.74h-2.124v-1.92h2.124v-.757c0-1.35.85-2.158 2.21-2.158.547 0 1.096.096 1.34.18l-.348 1.844c-.2-.07-.468-.112-.76-.112-.66 0-.96.38-.96 1.03v.813h2.64v1.92h-2.64v1.737c.692.052 1.284.174 1.65.334.354.154.534.454.49.824z" fill="#ffffff"/>
+              </svg>
+            </div>
+            <div class="donate-brand-info">
+              <div class="usdt-title-row">
+                <span class="donate-brand-title">USDT (Tether)</span>
+                <span class="donate-network-tag">BNB Smart Chain (BEP20)</span>
+              </div>
+              <span class="donate-brand-sub">Crypto Deposit / Web3</span>
+            </div>
+          </div>
+
+          <!-- QR Code Image -->
+          <div class="usdt-qr-container">
+            <div class="usdt-qr-card">
+              <img src="icons/usdt-qr.png" alt="USDT BEP20 QR Code" class="usdt-qr-img">
+              <span class="qr-caption">Scan QR untuk Deposit USDT (BEP20)</span>
+            </div>
+          </div>
+
+          <div class="donate-data-row usdt-address-row">
+            <div class="donate-data-box">
+              <span class="donate-data-label">Alamat Dompet (BEP20)</span>
+              <span class="donate-data-value monospace-addr" id="usdtAddrText">0x0f22225773acf8c5cc7b4c4075a95bcef244656e</span>
+            </div>
+            <button class="donate-copy-btn" id="copyUsdtBtn" data-copy="0x0f22225773acf8c5cc7b4c4075a95bcef244656e" title="Salin alamat USDT BEP20">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span>Salin</span>
+            </button>
+          </div>
+
+          <div class="donate-note">
+            <span class="note-icon">⚠️</span>
+            <span>Gunakan jaringan <strong>BNB Smart Chain (BEP20)</strong> untuk alamat di atas. Minimum deposit: 0.001 USDT.</span>
+          </div>
         </div>
       </div>
     </div>

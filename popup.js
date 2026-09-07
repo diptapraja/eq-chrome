@@ -767,6 +767,51 @@ function setupEventListeners() {
   });
 
   confirmSavePresetBtn.addEventListener('click', handleSavePresetConfirm);
+
+  // Donation Copy Buttons
+  setupCopyButtons();
+}
+
+// Copy to Clipboard with Visual Feedback
+function setupCopyButtons() {
+  document.querySelectorAll('.donate-copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const textToCopy = btn.dataset.copy;
+      if (!textToCopy) return;
+
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(textToCopy);
+        } else {
+          const ta = document.createElement('textarea');
+          ta.value = textToCopy;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        }
+
+        const origHtml = btn.innerHTML;
+        btn.innerHTML = `
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span style="color:#10B981;font-weight:700;">Tersalin!</span>
+        `;
+        btn.classList.add('copied');
+
+        setTimeout(() => {
+          btn.innerHTML = origHtml;
+          btn.classList.remove('copied');
+        }, 1800);
+      } catch (err) {
+        console.error('Failed to copy to clipboard:', err);
+      }
+    });
+  });
 }
 
 // Handle Saving New Preset
